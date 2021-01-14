@@ -5,4 +5,5 @@ export interface IPokemon {
   name: string;
   image: string;
   moves: IMove[];
+  types: string[];
 }
