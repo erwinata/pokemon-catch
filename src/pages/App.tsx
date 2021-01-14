@@ -9,7 +9,7 @@ import Pokemon from "./Pokemon";
 const Container = styled.div`
   background: url("/bg.png") no-repeat center center fixed;
   background-size: cover;
-  min-height: 120vh;
+  min-height: 100vh;
 `;
 
 const App: React.FC<any> = (props) => {
