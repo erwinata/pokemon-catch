@@ -38,7 +38,7 @@ const Card: React.FC<Props> = (props) => {
   return (
     <Container maxWidth={props.maxWidth}>
       {props.closeAction && (
-        <CloseButton>
+        <CloseButton onClick={props.closeAction}>
           <img src="/x-black.svg" />
         </CloseButton>
       )}

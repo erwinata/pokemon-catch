@@ -7,7 +7,7 @@ import ElementType from "components/ElementType";
 import MoveItem from "components/MoveItem";
 import PokemonImage from "components/PokemonImage";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { IMove } from "types/IMove";
 import { IPokemon } from "types/IPokemon";
 import mq from "utils/mediaqueries";
@@ -94,6 +94,7 @@ const Pokemon: React.FC<Props> = (props) => {
   const [pokemonData, setPokemonData] = useState<IPokemon>(undefined!);
 
   const { name } = useParams<IParams>();
+  const history = useHistory();
 
   const fetchData = async () => {
     const { data: dataPokemon } = await client.query({
@@ -146,10 +147,16 @@ const Pokemon: React.FC<Props> = (props) => {
     }
   }, [name]);
 
+  const handle = {
+    goBack: () => {
+      history.push("/");
+    },
+  };
+
   return (
     <Container>
       {/* <CatchPopup /> */}
-      <Card maxWidth={600}>
+      <Card maxWidth={600} closeAction={handle.goBack}>
         {pokemonData && (
           <>
             <Header>
