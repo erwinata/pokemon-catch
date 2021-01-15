@@ -2,22 +2,24 @@ import styled from "@emotion/styled";
 import React from "react";
 
 interface Props {
-  onClick?: () => any;
+  onClick?: (...params: any) => any;
   type?: "submit" | "reset" | "button";
-  color?: "primary" | "default";
+  color?: "primary" | "default" | "danger";
+  size?: "sm" | "md" | "lg";
 }
 
 interface ContainerProps {
   color: string;
+  fontSize: string;
+  padding: string;
 }
-
 const Container = styled.button<ContainerProps>`
   background: ${(props) => props.color};
   color: white;
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: ${(props) => props.fontSize};
   width: auto;
-  padding: 0.5rem 2rem;
+  padding: ${(props) => props.padding};
   border-radius: 999px;
   box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.2);
   display: flex;
@@ -26,7 +28,7 @@ const Container = styled.button<ContainerProps>`
   transform: scale(1, 1);
   transition: 0.1s ease;
   & img {
-    max-height: 24px;
+    max-height: 1.5rem;
   }
   &:hover {
     transform: scale(1.05, 1.05);
@@ -35,14 +37,29 @@ const Container = styled.button<ContainerProps>`
 
 const colorList = {
   primary: "#8769e0",
+  danger: "#e74545",
   default: "#979eba",
+};
+
+const fontSizeList = {
+  sm: "0.8rem",
+  md: "1rem",
+  lg: "1.25rem",
+};
+
+const paddingList = {
+  sm: "0.25rem 0.75rem",
+  md: "0.25rem 1.25rem",
+  lg: "0.5rem 2rem",
 };
 
 const Button: React.FC<Props> = (props) => {
   let color = props.color ? colorList[props.color] : colorList.default;
+  let fontSize = props.size ? fontSizeList[props.size] : fontSizeList.md;
+  let padding = props.size ? paddingList[props.size] : paddingList.md;
 
   return (
-    <Container {...props} color={color} onClick={props.onClick}>
+    <Container color={color} fontSize={fontSize} padding={padding} onClick={props.onClick}>
       {props.children}
     </Container>
   );

@@ -16,6 +16,7 @@ const Container = styled.div`
   position: fixed;
   height: 100vh;
   width: 100vw;
+  top: 0;
   background: rgba(0, 0, 0, 0.7);
   z-index: 100;
   display: flex;
@@ -87,7 +88,7 @@ const CatchPopup: React.FC<Props> = (props) => {
           )}
           {catchState === "FAILED" && (
             <ButtonContainer>
-              <Button color="primary" onClick={handle.tryAgain}>
+              <Button size="lg" color="primary" onClick={handle.tryAgain}>
                 Try Again
               </Button>
               <Button onClick={props.exitCatching}>Go Back</Button>

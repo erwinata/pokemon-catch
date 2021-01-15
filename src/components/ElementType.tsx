@@ -14,7 +14,7 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   font-weight: 700;
-  font-size: ${(props) => (props.small ? "0.7rem" : "0.8rem")};
+  font-size: ${(props) => (props.small ? "0.8rem" : "0.8rem")};
   border-radius: 9999px;
   background: ${(props) => props.color};
   padding: ${(props) => (props.small ? "0.15rem 0.05rem" : "0.35rem 0.25rem")};

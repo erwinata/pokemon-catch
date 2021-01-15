@@ -77,7 +77,9 @@ const NamingForm: React.FC<Props> = (props) => {
       <h1>Give Nickname</h1>
       <Input error={inputError !== ""} autoFocus value={inputName} onChange={handle.inputChange} />
       {inputError && <TextError>{inputError}</TextError>}
-      <Button color="primary">OK</Button>
+      <Button size="lg" color="primary">
+        OK
+      </Button>
     </Form>
   );
 };
