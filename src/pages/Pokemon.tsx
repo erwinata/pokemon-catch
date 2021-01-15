@@ -174,8 +174,8 @@ const Pokemon: React.FC<Props> = (props) => {
               <InfoContainer>
                 <Name>{capitalizeEachWord(pokemonData.name)}</Name>
                 <TypeContainer>
-                  {pokemonData.types.map((item) => (
-                    <ElementType type={item} small />
+                  {pokemonData.types.map((item, index) => (
+                    <ElementType type={item} small key={index} />
                   ))}
                 </TypeContainer>
                 <hr />
@@ -190,8 +190,8 @@ const Pokemon: React.FC<Props> = (props) => {
               </InfoContainer>
             </Header>
             <MoveList>
-              {pokemonData.moves.map((item) => {
-                return <MoveItem data={item} />;
+              {pokemonData.moves.map((item, index) => {
+                return <MoveItem data={item} key={index} />;
               })}
             </MoveList>
           </>

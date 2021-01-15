@@ -45,6 +45,7 @@ object {
 
 button {
   outline: none;
+  background: none;
 }
 
 *,

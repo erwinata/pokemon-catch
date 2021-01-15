@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import { IPokemon } from "types/IPokemon";
@@ -32,10 +33,13 @@ const Container = styled.div<ContainerProps>`
   }
   & > .pokeball {
     animation: ${(props) => (props.animationState === "BOUNCE" ? bounce : shake)} 1s ease infinite;
-    animation-delay: 0.2s;
   }
   & > .pokemon {
-    ${(props) => props.catchState === "SUCCESS" && `animation: ${shake} 1.2s ease infinite;`};
+    ${(props) =>
+      props.catchState === "SUCCESS" &&
+      css`
+        animation: ${shake} 1.2s ease infinite;
+      `};
     ${(props) => props.catchState === "FAILED" && `opacity: 0.5;`};
   }
 `;
@@ -56,10 +60,14 @@ const Pokeball: React.FC<Props> = (props) => {
 
   const animate = async () => {
     setAnimationState("BOUNCE");
-    await new Promise((res) => setTimeout(res, 1200));
+    await new Promise((res) => setTimeout(res, 800));
     setAnimationState("SHAKE");
-    await new Promise((res) => setTimeout(res, 2000));
+    await new Promise((res) => setTimeout(res, getRandomTimeout()));
     props.setCatchState(getRandomResult() ? "SUCCESS" : "FAILED");
+  };
+
+  const getRandomTimeout = () => {
+    return Math.random() * 1000 + 1000;
   };
 
   const getRandomResult = () => {
