@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Container = styled.div`
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.25);
   border-radius: 4px;
   width: calc(33.3333% - (1rem / 3));
   padding: 1rem 0.5rem;
@@ -20,6 +20,7 @@ const Container = styled.div`
   align-items: center;
   transform: translateY(0);
   transition: 0.1s ease;
+  cursor: default;
   ${mq.xs} {
     width: calc(25% - (1.5rem / 4));
   }
