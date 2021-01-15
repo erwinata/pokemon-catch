@@ -28,7 +28,20 @@ export const useActions = (state: IAppState, dispatch: React.Dispatch<AppActions
     return true;
   };
 
+  const addToMyPokemon = (pokemon: IPokemonItem) => {
+    const nicknameExist = state.myPokemon.find((item) => {
+      return (item.nickname ?? "").toLowerCase() === (pokemon.nickname ?? "").toLowerCase();
+    });
+
+    if (nicknameExist) {
+      return false;
+    }
+    dispatch({ type: "ADD_TO_MY_POKEMON", pokemon: pokemon });
+    return true;
+  };
+
   return {
     fetchWildPokemon,
+    addToMyPokemon,
   };
 };

@@ -8,6 +8,18 @@ export const appReducer = (state: IAppState, action: AppActions): IAppState => {
         ...state,
         wildPokemon: action.pokemons,
       };
+    case "ADD_TO_MY_POKEMON":
+      return {
+        ...state,
+        myPokemon: [action.pokemon, ...state.myPokemon],
+      };
+    case "RELEASE_MY_POKEMON":
+      return {
+        ...state,
+        myPokemon: state.myPokemon.filter((pokemon) => {
+          return pokemon.nickname !== action.pokemon.nickname;
+        }),
+      };
     default:
       return state;
   }

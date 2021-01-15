@@ -3,6 +3,7 @@ import client from "api/client";
 import { queryPokemonDetail, queryPokemonMoves } from "api/queries";
 import Button from "components/Button";
 import Card from "components/Card";
+import CatchPopup from "components/CatchPopup";
 import ElementType from "components/ElementType";
 import MoveItem from "components/MoveItem";
 import PokemonImage from "components/PokemonImage";
@@ -81,8 +82,6 @@ const MoveList = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
-  /* flex-direction: column; */
-  /* align-items: center; */
   gap: 0.5rem;
   padding: 0.5rem 0;
   ${mq.xs} {
@@ -92,6 +91,7 @@ const ButtonContainer = styled.div`
 
 const Pokemon: React.FC<Props> = (props) => {
   const [pokemonData, setPokemonData] = useState<IPokemon>(undefined!);
+  const [isCatching, setIsCatching] = useState(false);
 
   const { name } = useParams<IParams>();
   const history = useHistory();
@@ -151,13 +151,21 @@ const Pokemon: React.FC<Props> = (props) => {
     goBack: () => {
       history.push("/");
     },
+    exitCatching: () => {
+      setIsCatching(false);
+    },
+    catchPokemon: () => {
+      setIsCatching(true);
+    },
   };
 
   return (
     <Container>
-      {/* <CatchPopup /> */}
+      {isCatching && <CatchPopup pokemon={pokemonData} exitCatching={handle.exitCatching} />}
       <Card maxWidth={600} closeAction={handle.goBack}>
-        {pokemonData && (
+        {!pokemonData ? (
+          <div>Loading...</div>
+        ) : (
           <>
             <Header>
               <ImageContainer>
@@ -172,7 +180,9 @@ const Pokemon: React.FC<Props> = (props) => {
                 </TypeContainer>
                 <hr />
                 <ButtonContainer>
-                  <Button color="primary">Catch</Button>
+                  <Button color="primary" onClick={handle.catchPokemon}>
+                    Catch
+                  </Button>
                   <Button>
                     <img src="/pokeball.png" />1
                   </Button>
