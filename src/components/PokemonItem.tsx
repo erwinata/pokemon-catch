@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Container = styled.div`
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 4px;
   width: calc(33.3333% - (1rem / 3));
   padding: 1rem 0.5rem;
@@ -32,7 +32,7 @@ const Container = styled.div`
   }
   &:hover {
     transform: translateY(-6px);
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.75);
     box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.37);
   }
 `;

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
+import { AppContext } from "context/context";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import mq from "utils/mediaqueries";
 
@@ -11,19 +12,22 @@ const Container = styled.div`
 `;
 
 const NavbarItem = styled.div`
-  padding: 1rem 0.25rem 0.5rem;
+  padding: 1.5rem 0.25rem 1rem;
+  height: 70px;
   border-radius: 8px 8px 0 0;
   width: 50%;
-  transform: scale(1, 1);
-  transition: 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   cursor: default;
 
   &.active {
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.2);
   }
 
   & h1 {
-    text-align: center;
+    transform: scale(1, 1);
     font-weight: bold;
     font-size: 0.8rem;
     color: rgba(0, 0, 0, 0.25);
@@ -35,23 +39,34 @@ const NavbarItem = styled.div`
     }
   }
 
-  &:not(.active):hover {
-    transform: scale(1.1, 1.1);
+  &:not(.active) h1:hover {
+    color: rgba(0, 0, 0, 0.5);
   }
 
   &.active h1 {
     font-size: 1rem;
     ${mq.xs} {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
     }
     ${mq.sm} {
-      font-size: 2rem;
+      font-size: 1.8rem;
     }
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    padding-left: var(--padding);
-    padding-right: var(--padding);
-    background-image: linear-gradient(90deg, #627bc1, #5cc3ff);
+    color: white;
+  }
+
+  &.active div {
+    background: rgb(243, 52, 77);
+  }
+  & div {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-weight: 600;
+    color: white;
+    font-size: 0.8rem;
+    ${mq.xs} {
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -65,6 +80,8 @@ const Navbar: React.FC<Props> = (props) => {
   const [activePage, setActivePage] = useState<Page>(Page.WILD_POKEMON);
 
   const location = useLocation();
+
+  const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {
     if (location.pathname === "/") setActivePage(Page.WILD_POKEMON);
@@ -93,6 +110,7 @@ const Navbar: React.FC<Props> = (props) => {
         onClick={handle.goToMyPokemon}
       >
         <h1>My Pokemon</h1>
+        {state.myPokemon.length > 0 && <div>{state.myPokemon.length}</div>}
       </NavbarItem>
     </Container>
   );

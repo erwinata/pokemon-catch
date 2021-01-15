@@ -11,7 +11,9 @@ const PokemonList = styled.div`
   flex-wrap: wrap;
   padding: 1rem;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.2);
+  overflow-y: auto;
+  height: 80vh;
 `;
 
 const WildPokemon: React.FC<Props> = (props) => {
