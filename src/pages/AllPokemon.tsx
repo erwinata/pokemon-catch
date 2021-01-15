@@ -1,10 +1,9 @@
-import { useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
-import { queryPokemonList } from "api/queries";
 import Card from "components/Card";
 import PokemonItem from "components/PokemonItem";
-import React, { useEffect, useState } from "react";
-import { IPokemonItem } from "types/IPokemonItem";
+import { AppContext } from "context/context";
+import { useActions } from "context/useActions";
+import React, { useContext, useEffect, useState } from "react";
 
 interface Props {}
 
@@ -20,28 +19,35 @@ const PokemonList = styled.div`
 `;
 
 const AllPokemon: React.FC<Props> = (props) => {
-  const [pokemons, setpokemons] = useState<IPokemonItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  const { loading, error, data } = useQuery(queryPokemonList);
+  const { state, dispatch } = useContext(AppContext);
+  const { fetchWildPokemon } = useActions(state, dispatch);
+  const { wildPokemon } = state;
+
+  // const { loading, error, data } = useQuery(queryPokemonList);
+
+  const startFetchingData = async () => {
+    setIsLoading(true);
+
+    const isSuccessFetch = await fetchWildPokemon(0, 30);
+    if (!isSuccessFetch) {
+      setIsError(true);
+    }
+
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    if (data) {
-      const resultPokemons: IPokemonItem[] = data.pokemons.results.map((pokemon: any) => {
-        const resultPokemon: IPokemonItem = {
-          image: pokemon.image,
-          name: pokemon.name,
-        };
-        return resultPokemon;
-      });
-      setpokemons(resultPokemons);
-    }
-  }, [data]);
+    startFetchingData();
+  }, []);
 
   return (
     <PageContainer>
       <Card>
         <PokemonList>
-          {pokemons.map((item, index) => {
+          {wildPokemon.map((item, index) => {
             return <PokemonItem data={item} key={index} />;
           })}
         </PokemonList>
