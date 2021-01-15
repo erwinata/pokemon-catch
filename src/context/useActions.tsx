@@ -40,8 +40,13 @@ export const useActions = (state: IAppState, dispatch: React.Dispatch<AppActions
     return true;
   };
 
+  const releaseMyPokemon = (pokemon: IPokemonItem) => {
+    dispatch({ type: "RELEASE_MY_POKEMON", pokemon: pokemon });
+  };
+
   return {
     fetchWildPokemon,
     addToMyPokemon,
+    releaseMyPokemon,
   };
 };
