@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Main from "./Main";
 import NotFound from "./NotFound";
-import Pokemon from "./Pokemon";
+import PokemonDetail from "./PokemonDetail";
 
 const Container = styled.div`
   background: url("/bg.png") no-repeat center center fixed;
@@ -18,7 +18,7 @@ const App: React.FC<any> = (props) => {
         <Switch>
           <Route exact path="/" component={Main} />
           <Route exact path="/mypokemon" component={Main} />
-          <Route exact path="/pokemon/:name" component={Pokemon} />
+          <Route exact path="/pokemon/:name" component={PokemonDetail} />
           <Route path="/" component={NotFound} />
         </Switch>
       </BrowserRouter>

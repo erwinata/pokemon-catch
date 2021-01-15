@@ -7,7 +7,8 @@ import CatchPopup from "components/CatchPopup";
 import ElementType from "components/ElementType";
 import MoveItem from "components/MoveItem";
 import PokemonImage from "components/PokemonImage";
-import React, { useEffect, useState } from "react";
+import { AppContext } from "context/context";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { IMove } from "types/IMove";
 import { IPokemon } from "types/IPokemon";
@@ -21,8 +22,7 @@ interface IParams {
 }
 
 const Container = styled.div`
-  padding: 1rem 0;
-  height: 100vh;
+  padding: 5rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,12 +89,14 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const Pokemon: React.FC<Props> = (props) => {
+const PokemonDetail: React.FC<Props> = (props) => {
   const [pokemonData, setPokemonData] = useState<IPokemon>(undefined!);
   const [isCatching, setIsCatching] = useState(false);
 
   const { name } = useParams<IParams>();
   const history = useHistory();
+
+  const { state, dispatch } = useContext(AppContext);
 
   const fetchData = async () => {
     const { data: dataPokemon } = await client.query({
@@ -157,7 +159,14 @@ const Pokemon: React.FC<Props> = (props) => {
     catchPokemon: () => {
       setIsCatching(true);
     },
+    openMyPokemon: () => {
+      history.push("/mypokemon");
+    },
   };
+
+  const totalPokemonOwned = state.myPokemon.filter((pokemon) => {
+    return pokemon.name === pokemonData?.name;
+  }).length;
 
   return (
     <Container>
@@ -180,11 +189,12 @@ const Pokemon: React.FC<Props> = (props) => {
                 </TypeContainer>
                 <hr />
                 <ButtonContainer>
-                  <Button color="primary" onClick={handle.catchPokemon}>
+                  <Button size="lg" color="primary" onClick={handle.catchPokemon}>
                     Catch
                   </Button>
-                  <Button>
-                    <img src="/pokeball.png" />1
+                  <Button size="lg" onClick={handle.openMyPokemon}>
+                    <img src="/pokeball.png" />
+                    {totalPokemonOwned}
                   </Button>
                 </ButtonContainer>
               </InfoContainer>
@@ -201,4 +211,4 @@ const Pokemon: React.FC<Props> = (props) => {
   );
 };
 
-export default Pokemon;
+export default PokemonDetail;
