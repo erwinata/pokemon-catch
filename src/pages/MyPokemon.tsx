@@ -34,6 +34,14 @@ const ContentContainer = styled.div`
   padding: 0.5rem 0;
   background: rgba(255, 255, 255, 0.8);
 `;
+const NoDataMessage = styled.h1`
+  padding: 3rem 0;
+  text-align: center;
+  background: white;
+  opacity: 0.3;
+  font-weight: 600;
+  font-size: 1.3rem;
+`;
 const PokemonList = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -52,11 +60,18 @@ const MyPokemon: React.FC<Props> = (props) => {
         <Card>
           <ContentContainer onClick={(e) => e.stopPropagation()}>
             <Title>My Pokemon</Title>
-            <PokemonList>
-              {state.myPokemon.map((pokemon) => {
-                return <MyPokemonItem data={pokemon} key={pokemon.nickname} />;
-              })}
-            </PokemonList>
+            {state.myPokemon.length === 0 ? (
+              <NoDataMessage>
+                It's lonely here
+                <br /> Go Catch some Pokemon
+              </NoDataMessage>
+            ) : (
+              <PokemonList>
+                {state.myPokemon.map((pokemon) => {
+                  return <MyPokemonItem data={pokemon} key={pokemon.nickname} />;
+                })}
+              </PokemonList>
+            )}
           </ContentContainer>
         </Card>
       </Container>
