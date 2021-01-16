@@ -8,6 +8,7 @@ import ElementType from "components/ElementType";
 import MoveItem from "components/MoveItem";
 import PokemonImage from "components/PokemonImage";
 import { AppContext } from "context/context";
+import { useActions } from "context/useActions";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { IMove } from "types/IMove";
@@ -22,7 +23,6 @@ interface IParams {
 }
 
 const Container = styled.div`
-  padding: 5rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,7 +30,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.85);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,6 +43,7 @@ const Header = styled.div`
 
 const ImageContainer = styled.div`
   width: 50%;
+  max-width: 200px;
   padding: 0 1rem;
   ${mq.xs} {
     width: 30%;
@@ -97,6 +98,7 @@ const PokemonDetail: React.FC<Props> = (props) => {
   const history = useHistory();
 
   const { state, dispatch } = useContext(AppContext);
+  const { showMyPokemon } = useActions(state, dispatch);
 
   const fetchData = async () => {
     const { data: dataPokemon } = await client.query({
@@ -160,7 +162,7 @@ const PokemonDetail: React.FC<Props> = (props) => {
       setIsCatching(true);
     },
     openMyPokemon: () => {
-      history.push("/mypokemon");
+      showMyPokemon(true);
     },
   };
 

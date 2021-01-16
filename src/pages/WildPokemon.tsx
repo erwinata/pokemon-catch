@@ -9,11 +9,10 @@ interface Props {}
 const PokemonList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding: 1rem;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.2);
-  overflow-y: auto;
-  height: 80vh;
+  padding: 2rem 1rem;
+  column-gap: 0.5rem;
+  row-gap: 1.5rem;
+  background: rgba(255, 255, 255, 1);
 `;
 
 const WildPokemon: React.FC<Props> = (props) => {

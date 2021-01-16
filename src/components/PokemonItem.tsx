@@ -10,45 +10,43 @@ interface Props {
 }
 
 const Container = styled.div`
-  background: rgba(255, 255, 255, 0.5);
   border-radius: 4px;
-  width: calc(33.3333% - (1rem / 3));
-  padding: 1rem 0.5rem;
+  width: calc(25% - (1.5rem / 4));
   display: flex;
   flex-direction: column;
   gap: 4px;
   align-items: center;
-  transform: translateY(0);
-  transition: 0.1s ease;
+  justify-content: center;
   cursor: default;
   ${mq.xs} {
-    width: calc(25% - (1.5rem / 4));
-  }
-  ${mq.md} {
     width: calc(20% - (2rem / 5));
   }
-  ${mq.lg} {
+  ${mq.md} {
     width: calc(16.6667% - (2.5rem / 6));
   }
-  &:hover {
-    transform: translateY(-6px);
-    background: rgba(255, 255, 255, 0.75);
-    box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.37);
+  ${mq.lg} {
+    width: calc(12.5% - (3.5rem / 8));
+  }
+  & img {
+    transform: scale(1, 1);
+    transition: 0.1s ease;
+  }
+  &:hover img {
+    transform: scale(1.1, 1.1);
   }
 `;
 
 const ImageContainer = styled.div`
   width: 80%;
-  max-width: 120px;
 `;
 
 const Name = styled.div`
   text-transform: capitalize;
   text-align: center;
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   ${mq.xs} {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 `;
 
@@ -62,7 +60,6 @@ const PokemonItem: React.FC<Props> = (props) => {
   };
 
   return (
-    // <Link to={`/pokemon/${props.data.name}`}>
     <Container onClick={handle.openPokemon}>
       <ImageContainer>
         <PokemonImage src={props.data.image} />

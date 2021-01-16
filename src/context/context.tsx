@@ -5,11 +5,13 @@ import { AppActions } from "./actions";
 import { appReducer } from "./reducers";
 
 export type IAppState = {
+  showMyPokemon: boolean;
   wildPokemon: IPokemonItem[];
   myPokemon: IPokemonItem[];
 };
 
 const initialState: IAppState = {
+  showMyPokemon: false,
   wildPokemon: [],
   myPokemon: localLoadMyPokemon(),
 };

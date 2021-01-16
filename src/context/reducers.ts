@@ -4,6 +4,12 @@ import { IAppState } from "./context";
 
 export const appReducer = (state: IAppState, action: AppActions): IAppState => {
   switch (action.type) {
+    case "SET_SHOW_MY_POKEMON": {
+      return {
+        ...state,
+        showMyPokemon: action.show,
+      };
+    }
     case "SET_WILD_POKEMON": {
       return {
         ...state,

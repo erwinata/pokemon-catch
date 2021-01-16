@@ -5,6 +5,10 @@ import { AppActions } from "./actions";
 import { IAppState } from "./context";
 
 export const useActions = (state: IAppState, dispatch: React.Dispatch<AppActions>) => {
+  const showMyPokemon = (show: boolean) => {
+    dispatch({ type: "SET_SHOW_MY_POKEMON", show: show });
+  };
+
   const fetchWildPokemon = async (offset: number, limit: number) => {
     const { data, error } = await client.query({
       query: queryWildPokemonList,
@@ -45,6 +49,7 @@ export const useActions = (state: IAppState, dispatch: React.Dispatch<AppActions
   };
 
   return {
+    showMyPokemon,
     fetchWildPokemon,
     addToMyPokemon,
     releaseMyPokemon,

@@ -13,10 +13,10 @@ interface Props {
 }
 
 const Container = styled.div`
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.8);
   width: calc(100%);
-  padding: 0.5rem 0.5rem;
+  border-top: 1px solid #d5d4e2;
+  padding: 0.5rem 1rem;
   height: 70px;
   display: flex;
   gap: 0.5rem;
@@ -24,21 +24,11 @@ const Container = styled.div`
   transform: translateY(0);
   transition: 0.1s ease;
   cursor: default;
-  ${mq.xs} {
-    width: calc(50% - (0.5rem / 2));
-  }
-  ${mq.md} {
-    width: calc(33.3333% - (1rem / 3));
-  }
-  &:hover {
-    background: rgba(255, 255, 255, 0.75);
-    box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.37);
-  }
 `;
 
 const ImageContainer = styled.div`
   width: 20%;
-  max-width: 60px;
+  max-width: 55px;
 `;
 
 const NameContainer = styled.div`
@@ -82,10 +72,11 @@ const MyPokemonItem: React.FC<Props> = (props) => {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
 
   const { state, dispatch } = useContext(AppContext);
-  const { releaseMyPokemon } = useActions(state, dispatch);
+  const { showMyPokemon, releaseMyPokemon } = useActions(state, dispatch);
 
   const handle = {
     openPokemon: () => {
+      showMyPokemon(false);
       history.push(`/pokemon/${props.data.name}`);
     },
     releasePokemon: () => {

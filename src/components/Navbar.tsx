@@ -1,117 +1,51 @@
 import styled from "@emotion/styled";
 import { AppContext } from "context/context";
-import React, { useContext, useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import mq from "utils/mediaqueries";
+import { useActions } from "context/useActions";
+import React, { useContext } from "react";
+import MyPokemonButton from "./MyPokemonButton";
 
 interface Props {}
 
 const Container = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const NavbarItem = styled.div`
-  padding: 1.5rem 0.25rem 1rem;
+  position: fixed;
+  width: 100vw;
   height: 70px;
-  border-radius: 8px 8px 0 0;
-  width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  cursor: default;
-
-  &.active {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  & h1 {
-    transform: scale(1, 1);
-    font-weight: bold;
-    font-size: 0.8rem;
-    color: rgba(0, 0, 0, 0.25);
-    ${mq.xs} {
-      font-size: 1.2rem;
-    }
-    ${mq.sm} {
-      font-size: 1.5rem;
-    }
-  }
-
-  &:not(.active) h1:hover {
-    color: rgba(0, 0, 0, 0.5);
-  }
-
-  &.active h1 {
-    font-size: 1rem;
-    ${mq.xs} {
-      font-size: 1.3rem;
-    }
-    ${mq.sm} {
-      font-size: 1.8rem;
-    }
-    color: white;
-  }
-
-  &.active div {
-    background: rgb(243, 52, 77);
-  }
-  & div {
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 9999px;
-    padding: 0.25rem 0.75rem;
-    font-weight: 600;
-    color: white;
-    font-size: 0.8rem;
-    ${mq.xs} {
-      font-size: 1rem;
-    }
-  }
+  z-index: 100;
+  top: 0;
+  background: #25252c;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 `;
 
-enum Page {
-  WILD_POKEMON,
-  MY_POKEMON,
-}
+const ContentContainer = styled.div`
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+`;
+
+const Logo = styled.img`
+  height: 50px;
+`;
 
 const Navbar: React.FC<Props> = (props) => {
-  const history = useHistory();
-  const [activePage, setActivePage] = useState<Page>(Page.WILD_POKEMON);
-
-  const location = useLocation();
-
   const { state, dispatch } = useContext(AppContext);
-
-  useEffect(() => {
-    if (location.pathname === "/") setActivePage(Page.WILD_POKEMON);
-    if (location.pathname === "/mypokemon") setActivePage(Page.MY_POKEMON);
-  }, [location.pathname]);
+  const { showMyPokemon } = useActions(state, dispatch);
 
   const handle = {
-    goToWildPokemon: () => {
-      if (activePage !== Page.WILD_POKEMON) history.push("/");
-    },
-    goToMyPokemon: () => {
-      if (activePage !== Page.MY_POKEMON) history.push("/mypokemon");
+    clickLogo: () => {
+      showMyPokemon(false);
     },
   };
 
   return (
     <Container>
-      <NavbarItem
-        className={activePage === Page.WILD_POKEMON ? "active" : ""}
-        onClick={handle.goToWildPokemon}
-      >
-        <h1>Wild Pokemon</h1>
-      </NavbarItem>
-      <NavbarItem
-        className={activePage === Page.MY_POKEMON ? "active" : ""}
-        onClick={handle.goToMyPokemon}
-      >
-        <h1>My Pokemon</h1>
-        {state.myPokemon.length > 0 && <div>{state.myPokemon.length}</div>}
-      </NavbarItem>
+      <ContentContainer>
+        <Logo src="/pokemon-logo.png" onClick={handle.clickLogo} />
+        <MyPokemonButton />
+      </ContentContainer>
     </Container>
   );
 };
