@@ -7,7 +7,10 @@ import WildPokemon from "./WildPokemon";
 
 interface Props {}
 
-const PageContainer = styled.div``;
+const PageContainer = styled.div`
+  margin: 0 auto;
+  width: 95%;
+`;
 
 const Main: React.FC<Props> = (props) => {
   return (

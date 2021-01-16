@@ -24,6 +24,7 @@ export const useActions = (state: IAppState, dispatch: React.Dispatch<AppActions
       const resultPokemon: IPokemonItem = {
         image: pokemon.image,
         name: pokemon.name,
+        id: pokemon.id,
       };
       return resultPokemon;
     });
