@@ -8,6 +8,7 @@ interface Props {}
 const PokemonList = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   padding: 1rem;
   gap: 0.5rem;
   background: rgba(255, 255, 255, 0.2);
