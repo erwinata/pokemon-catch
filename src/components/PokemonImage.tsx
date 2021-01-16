@@ -3,6 +3,7 @@ import React from "react";
 
 interface Props {
   src: string;
+  alt: string;
   withoutBackground?: boolean;
 }
 
@@ -39,7 +40,7 @@ const PokemonImage: React.FC<Props> = (props) => {
   return (
     <Container withoutBackground={props.withoutBackground}>
       <ImageContainer>
-        <img src={props.src} />
+        <img src={props.src} alt={props.alt} />
       </ImageContainer>
     </Container>
   );

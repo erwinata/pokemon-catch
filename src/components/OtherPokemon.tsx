@@ -43,7 +43,7 @@ const OtherPokemon: React.FC<Props> = (props) => {
     <Container onClick={props.onClick} invisible={props.data === undefined}>
       <Card maxWidth={120}>
         <ContentContainer>
-          <PokemonImage src={props.data?.image ?? ""} />
+          <PokemonImage src={props.data?.image ?? ""} alt={props.data?.name ?? ""} />
           <h1>{capitalizeEachWord(props.data?.name ?? "")}</h1>
         </ContentContainer>
       </Card>

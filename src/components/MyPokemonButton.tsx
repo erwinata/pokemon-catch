@@ -61,7 +61,7 @@ const MyPokemonButton: React.FC<Props> = (props) => {
   return (
     <Container onClick={handle.toggleOpenMyPokemon}>
       {state.myPokemon.length > 0 && <PokemonNumber>{state.myPokemon.length}</PokemonNumber>}
-      <img src="/pokeball.png" />
+      <img src="/pokeball.png" alt="pokeball" />
       <span>My Pokemon</span>
     </Container>
   );

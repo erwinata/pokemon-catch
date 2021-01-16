@@ -203,7 +203,10 @@ const PokemonDetail: React.FC<Props> = (props) => {
         <SkeletonTheme color="#d8d9e6" highlightColor="#e7e8f8">
           <Header>
             <ImageContainer>
-              <PokemonImage src={pokemonBasicData?.image ?? ""} />
+              <PokemonImage
+                src={pokemonBasicData?.image ?? ""}
+                alt={pokemonBasicData?.name ?? ""}
+              />
             </ImageContainer>
             <InfoContainer>
               <Arrow
@@ -249,7 +252,7 @@ const PokemonDetail: React.FC<Props> = (props) => {
                       Catch
                     </Button>
                     <Button size="lg" onClick={handle.openMyPokemon}>
-                      <img src="/pokeball.png" />
+                      <img src="/pokeball.png" alt="pokeball" />
                       {totalPokemonOwned}
                     </Button>
                   </>

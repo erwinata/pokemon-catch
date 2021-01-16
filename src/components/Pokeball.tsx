@@ -85,11 +85,11 @@ const Pokeball: React.FC<Props> = (props) => {
       {props.catchState === "SUCCESS" && <CheckCircle />}
       {props.catchState === "CATCHING" ? (
         <>
-          <img className="pokeball" src="/pokeball.png" />
+          <img className="pokeball" src="/pokeball.png" alt="pokeball" />
           <Shadow />
         </>
       ) : (
-        <PokemonImage src={props.pokemon.image} />
+        <PokemonImage src={props.pokemon.image} alt={props.pokemon.name} />
       )}
     </Container>
   );

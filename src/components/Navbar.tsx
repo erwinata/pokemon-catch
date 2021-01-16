@@ -50,7 +50,7 @@ const Navbar: React.FC<Props> = (props) => {
   return (
     <Container>
       <ContentContainer>
-        <Logo src="/pokemon-logo.png" onClick={handle.clickLogo} />
+        <Logo src="/pokemon-logo.png" alt="logo" onClick={handle.clickLogo} />
         <MyPokemonButton />
       </ContentContainer>
     </Container>

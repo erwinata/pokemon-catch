@@ -15,7 +15,10 @@ const Container = styled.div`
 const LoadingContainer = styled.div`
   padding: 2rem 1rem;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 1rem;
 `;
 
 const PokemonList = styled.div`
@@ -55,7 +58,7 @@ const WildPokemon: React.FC<Props> = (props) => {
     setIsLoading(true);
 
     const offset = initialFetch ? 0 : state.wildPokemon.length;
-    const limit = initialFetch ? 100 : 30;
+    const limit = initialFetch ? 30 : 30;
     await fetchWildPokemon(offset, limit);
 
     setIsLoading(false);
@@ -78,26 +81,16 @@ const WildPokemon: React.FC<Props> = (props) => {
 
   return (
     <Container>
-      {/* <InfiniteScroll
-        dataLength={state.wildPokemon.length} //This is important field to render the next data
-        next={startFetchingData}
-        hasMore={true}
-        loader={
-          <LoadingContainer>
-            <Spinner size={70} />
-          </LoadingContainer>
-        }
-      > */}
       <PokemonList>
         {wildPokemon.map((item, index) => {
           return <PokemonItem data={item} key={index} />;
         })}
       </PokemonList>
-      {/* </InfiniteScroll> */}
 
       {isLoading && (
         <LoadingContainer>
           <Spinner size={70} />
+          <h1>Fetching Wild Pokemons...</h1>
         </LoadingContainer>
       )}
     </Container>

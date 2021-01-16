@@ -87,7 +87,7 @@ const MyPokemonItem: React.FC<Props> = (props) => {
   return (
     <Container onClick={handle.openPokemon}>
       <ImageContainer>
-        <PokemonImage src={props.data.image} />
+        <PokemonImage src={props.data.image} alt={props.data.name} />
       </ImageContainer>
       {!deleteConfirm ? (
         <>
@@ -101,7 +101,7 @@ const MyPokemonItem: React.FC<Props> = (props) => {
               setDeleteConfirm(true);
             }}
           >
-            <img src="/x-black.svg" />
+            <img src="/x-black.svg" alt="release" />
           </ReleaseButton>
         </>
       ) : (

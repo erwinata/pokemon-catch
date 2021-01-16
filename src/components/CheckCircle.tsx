@@ -23,7 +23,7 @@ const Container = styled.div`
 const CheckCircle: React.FC<Props> = (props) => {
   return (
     <Container>
-      <img src="/check.svg" />
+      <img src="/check.svg" alt="check" />
     </Container>
   );
 };

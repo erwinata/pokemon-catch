@@ -62,7 +62,7 @@ const PokemonItem: React.FC<Props> = (props) => {
   return (
     <Container onClick={handle.openPokemon}>
       <ImageContainer>
-        <PokemonImage src={props.data.image} />
+        <PokemonImage src={props.data.image} alt={props.data.name} />
       </ImageContainer>
       <Name>{props.data.name}</Name>
     </Container>
