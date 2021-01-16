@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { AppContext } from "context/context";
 import { useActions } from "context/useActions";
 import React, { useContext } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import MyPokemonButton from "./MyPokemonButton";
 
 interface Props {}
@@ -34,8 +35,14 @@ const Navbar: React.FC<Props> = (props) => {
   const { state, dispatch } = useContext(AppContext);
   const { showMyPokemon } = useActions(state, dispatch);
 
+  const location = useLocation();
+  const history = useHistory();
+
   const handle = {
     clickLogo: () => {
+      if (location.pathname !== "/") {
+        history.push("/");
+      }
       showMyPokemon(false);
     },
   };
