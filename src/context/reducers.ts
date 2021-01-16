@@ -13,7 +13,7 @@ export const appReducer = (state: IAppState, action: AppActions): IAppState => {
     case "SET_WILD_POKEMON": {
       return {
         ...state,
-        wildPokemon: action.pokemons,
+        wildPokemon: [...state.wildPokemon, ...action.pokemons],
       };
     }
     case "ADD_TO_MY_POKEMON": {
