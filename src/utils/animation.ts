@@ -21,3 +21,12 @@ export const shake = keyframes`
     transform: rotate(-5deg);
   }
 `;
+
+export const spin = keyframes`
+  from {
+      transform:rotate(0deg);
+  }
+  to {
+      transform:rotate(360deg);
+  }
+`;

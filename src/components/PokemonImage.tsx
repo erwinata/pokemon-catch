@@ -18,10 +18,29 @@ const Container = styled.div<ContainerProps>`
   }
 `;
 
+const ImageContainer = styled.div`
+  position: relative;
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 100%;
+  }
+  & > img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+`;
+
 const PokemonImage: React.FC<Props> = (props) => {
   return (
     <Container withoutBackground={props.withoutBackground}>
-      <img src={props.src} />
+      <ImageContainer>
+        <img src={props.src} />
+      </ImageContainer>
     </Container>
   );
 };

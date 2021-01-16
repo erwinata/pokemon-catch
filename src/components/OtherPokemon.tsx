@@ -11,8 +11,13 @@ interface Props {
   onClick: () => void;
 }
 
-const Container = styled.div`
+interface ContainerProps {
+  invisible: boolean;
+}
+const Container = styled.div<ContainerProps>`
   display: none;
+  visibility: ${(props) => props.invisible && "hidden"};
+  width: 120px;
 
   ${mq.sm} {
     display: block;
@@ -34,14 +39,12 @@ const ContentContainer = styled.div`
 `;
 
 const OtherPokemon: React.FC<Props> = (props) => {
-  if (!props.data) return null;
-
   return (
-    <Container onClick={props.onClick}>
+    <Container onClick={props.onClick} invisible={props.data === undefined}>
       <Card maxWidth={120}>
         <ContentContainer>
-          <PokemonImage src={props.data.image} />
-          <h1>{capitalizeEachWord(props.data.name)}</h1>
+          <PokemonImage src={props.data?.image ?? ""} />
+          <h1>{capitalizeEachWord(props.data?.name ?? "")}</h1>
         </ContentContainer>
       </Card>
     </Container>

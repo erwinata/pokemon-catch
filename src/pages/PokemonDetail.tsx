@@ -10,6 +10,7 @@ import PokemonImage from "components/PokemonImage";
 import { AppContext } from "context/context";
 import { useActions } from "context/useActions";
 import React, { useContext, useEffect, useState } from "react";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useHistory, useParams } from "react-router-dom";
 import { IPokemon } from "types/IPokemon";
 import { IPokemonItem } from "types/IPokemonItem";
@@ -112,7 +113,8 @@ const ButtonContainer = styled.div`
 `;
 
 const PokemonDetail: React.FC<Props> = (props) => {
-  const [pokemonData, setPokemonData] = useState<IPokemon>(undefined!);
+  const [pokemonBasicData, setPokemonBasicData] = useState<IPokemonItem>(undefined!);
+  const [pokemonDetailData, setPokemonDetailData] = useState<IPokemon>(undefined!);
   const [prevPokemon, setPrevPokemon] = useState<IPokemonItem>(undefined!);
   const [nextPokemon, setNextPokemon] = useState<IPokemonItem>(undefined!);
 
@@ -125,18 +127,22 @@ const PokemonDetail: React.FC<Props> = (props) => {
   const { showMyPokemon } = useActions(state, dispatch);
 
   const fetchPokemonDetail = async () => {
+    setPrevPokemon(undefined!);
+    setNextPokemon(undefined!);
+    setPokemonDetailData(undefined!);
+
     const resultPokemon = await apiGetPokemonDetail(name);
 
     if (resultPokemon.data) {
-      setPokemonData(resultPokemon.data);
+      setPokemonBasicData({
+        ...resultPokemon.data,
+      });
+      setPokemonDetailData(resultPokemon.data);
     }
   };
 
   const fetchPrevNextPokemon = async () => {
-    setPrevPokemon(undefined!);
-    setNextPokemon(undefined!);
-
-    const resultPokemons = await apiGetPokemonList(pokemonData.id - 2, 3);
+    const resultPokemons = await apiGetPokemonList(pokemonDetailData.id - 2, 3);
 
     if (resultPokemons.data) {
       if (resultPokemons.data[0] !== undefined) {
@@ -155,10 +161,10 @@ const PokemonDetail: React.FC<Props> = (props) => {
   }, [name]);
 
   useEffect(() => {
-    if (pokemonData) {
+    if (pokemonDetailData) {
       fetchPrevNextPokemon();
     }
-  }, [pokemonData]);
+  }, [pokemonDetailData]);
 
   const handle = {
     goBack: () => {
@@ -174,69 +180,97 @@ const PokemonDetail: React.FC<Props> = (props) => {
       showMyPokemon(true);
     },
     goToOtherPokemon: (direction: "PREV" | "NEXT") => {
-      if (direction === "PREV") {
-        prevPokemon && history.push("/pokemon/" + prevPokemon.name);
+      if (direction === "PREV" && prevPokemon) {
+        history.push("/pokemon/" + prevPokemon.name);
+        setPokemonBasicData(prevPokemon);
       }
-      if (direction === "NEXT") {
-        nextPokemon && history.push("/pokemon/" + nextPokemon.name);
+      if (direction === "NEXT" && nextPokemon) {
+        history.push("/pokemon/" + nextPokemon.name);
+        setPokemonBasicData(nextPokemon);
       }
     },
   };
 
   const totalPokemonOwned = state.myPokemon.filter((pokemon) => {
-    return pokemon.name === pokemonData?.name;
+    return pokemon.name === pokemonDetailData?.name;
   }).length;
 
   return (
     <Container>
       <OtherPokemon data={prevPokemon} onClick={() => handle.goToOtherPokemon("PREV")} />
-      {isCatching && <CatchPopup pokemon={pokemonData} exitCatching={handle.exitCatching} />}
+      {isCatching && <CatchPopup pokemon={pokemonDetailData} exitCatching={handle.exitCatching} />}
       <Card maxWidth={600} closeAction={handle.goBack}>
-        {!pokemonData ? (
-          <div>Loading...</div>
-        ) : (
-          <>
-            <Header>
-              <ImageContainer>
-                <PokemonImage src={pokemonData.image} />
-              </ImageContainer>
-              <InfoContainer>
-                <Arrow
-                  src="/arrow.svg"
-                  direction="LEFT"
-                  onClick={() => handle.goToOtherPokemon("PREV")}
-                />
-                <Arrow
-                  src="/arrow.svg"
-                  direction="RIGHT"
-                  onClick={() => handle.goToOtherPokemon("NEXT")}
-                />
+        <SkeletonTheme color="#d8d9e6" highlightColor="#e7e8f8">
+          <Header>
+            <ImageContainer>
+              <PokemonImage src={pokemonBasicData?.image ?? ""} />
+            </ImageContainer>
+            <InfoContainer>
+              <Arrow
+                src="/arrow.svg"
+                direction="LEFT"
+                onClick={() => handle.goToOtherPokemon("PREV")}
+              />
+              <Arrow
+                src="/arrow.svg"
+                direction="RIGHT"
+                onClick={() => handle.goToOtherPokemon("NEXT")}
+              />
+              <Name>
+                {!pokemonBasicData ? (
+                  <Skeleton height={35} width={200} />
+                ) : (
+                  <>{capitalizeEachWord(pokemonBasicData.name)}</>
+                )}
+              </Name>
 
-                <Name>{capitalizeEachWord(pokemonData.name)}</Name>
-                <TypeContainer>
-                  {pokemonData.types.map((item, index) => (
+              <TypeContainer>
+                {!pokemonDetailData ? (
+                  <>
+                    <Skeleton height={20} width={80} style={{ borderRadius: 9999 }} />
+                    <Skeleton height={20} width={80} style={{ borderRadius: 9999 }} />
+                  </>
+                ) : (
+                  pokemonDetailData.types.map((item, index) => (
                     <ElementType type={item} small key={index} />
-                  ))}
-                </TypeContainer>
-                <hr />
-                <ButtonContainer>
-                  <Button size="lg" color="primary" onClick={handle.catchPokemon}>
-                    Catch
-                  </Button>
-                  <Button size="lg" onClick={handle.openMyPokemon}>
-                    <img src="/pokeball.png" />
-                    {totalPokemonOwned}
-                  </Button>
-                </ButtonContainer>
-              </InfoContainer>
-            </Header>
-            <MoveList>
-              {pokemonData.moves.map((item, index) => {
-                return <MoveItem data={item} key={index} />;
-              })}
-            </MoveList>
-          </>
-        )}
+                  ))
+                )}
+              </TypeContainer>
+              <hr />
+              <ButtonContainer>
+                {!pokemonDetailData ? (
+                  <>
+                    <Skeleton height={42} width={120} style={{ borderRadius: 9999 }} />
+                    <Skeleton height={42} width={120} style={{ borderRadius: 9999 }} />
+                  </>
+                ) : (
+                  <>
+                    <Button size="lg" color="primary" onClick={handle.catchPokemon}>
+                      Catch
+                    </Button>
+                    <Button size="lg" onClick={handle.openMyPokemon}>
+                      <img src="/pokeball.png" />
+                      {totalPokemonOwned}
+                    </Button>
+                  </>
+                )}
+              </ButtonContainer>
+            </InfoContainer>
+          </Header>
+        </SkeletonTheme>
+        <SkeletonTheme color="#babbca" highlightColor="#d8d9e6">
+          <MoveList>
+            {!pokemonDetailData ? (
+              <Skeleton height={52} style={{ borderRadius: 4, marginBottom: 6 }} count={4} />
+            ) : (
+              <>
+                {pokemonDetailData.moves.map((item, index) => {
+                  return <MoveItem data={item} key={index} />;
+                })}
+              </>
+            )}
+          </MoveList>
+        </SkeletonTheme>
       </Card>
       <OtherPokemon data={nextPokemon} onClick={() => handle.goToOtherPokemon("NEXT")} />
     </Container>
