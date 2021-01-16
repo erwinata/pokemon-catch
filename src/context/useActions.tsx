@@ -1,5 +1,4 @@
-import client from "api/client";
-import { queryWildPokemonList } from "api/queries";
+import { apiGetPokemonList } from "api/pokemon";
 import { IPokemonItem } from "types/IPokemonItem";
 import { AppActions } from "./actions";
 import { IAppState } from "./context";
@@ -10,26 +9,13 @@ export const useActions = (state: IAppState, dispatch: React.Dispatch<AppActions
   };
 
   const fetchWildPokemon = async (offset: number, limit: number) => {
-    const { data, error } = await client.query({
-      query: queryWildPokemonList,
-      variables: {
-        offset: offset,
-        limit: limit,
-      },
-    });
+    const resultPokemons = await apiGetPokemonList(offset, limit);
 
-    if (error) return false;
+    if (!resultPokemons.data) {
+      return false;
+    }
 
-    const resultPokemons: IPokemonItem[] = data.pokemons.results.map((pokemon: any) => {
-      const resultPokemon: IPokemonItem = {
-        image: pokemon.image,
-        name: pokemon.name,
-        id: pokemon.id,
-      };
-      return resultPokemon;
-    });
-
-    dispatch({ type: "SET_WILD_POKEMON", pokemons: resultPokemons });
+    dispatch({ type: "SET_WILD_POKEMON", pokemons: resultPokemons.data });
     return true;
   };
 

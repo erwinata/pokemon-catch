@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-import client from "api/client";
-import { queryPokemonDetail, queryPokemonMoves, queryWildPokemonList } from "api/queries";
+import { apiGetPokemonDetail, apiGetPokemonList } from "api/pokemon";
 import Button from "components/Button";
 import Card from "components/Card";
 import CatchPopup from "components/CatchPopup";
@@ -12,11 +11,10 @@ import { AppContext } from "context/context";
 import { useActions } from "context/useActions";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { IMove } from "types/IMove";
 import { IPokemon } from "types/IPokemon";
 import { IPokemonItem } from "types/IPokemonItem";
 import mq from "utils/mediaqueries";
-import { capitalizeEachWord, normalizeMoveName } from "utils/strings";
+import { capitalizeEachWord } from "utils/strings";
 
 interface Props {}
 
@@ -127,76 +125,26 @@ const PokemonDetail: React.FC<Props> = (props) => {
   const { showMyPokemon } = useActions(state, dispatch);
 
   const fetchPokemonDetail = async () => {
-    const { data: dataPokemon } = await client.query({
-      query: queryPokemonDetail,
-      variables: {
-        name: name,
-      },
-    });
+    const resultPokemon = await apiGetPokemonDetail(name);
 
-    const paramsMoves = dataPokemon.pokemon.moves.map((item: any) => {
-      return item.move.name;
-    });
-
-    const { data: dataMoves } = await client.query({
-      query: queryPokemonMoves,
-      variables: {
-        move1: paramsMoves[0],
-        move2: paramsMoves[1],
-        move3: paramsMoves[2],
-        move4: paramsMoves[3],
-      },
-    });
-
-    const resultMoves: IMove[] = [];
-    for (let i = 1; i <= 4; i++) {
-      const data = dataMoves["move" + i].response;
-      const newMove: IMove = {
-        id: data.id,
-        name: normalizeMoveName(data.name),
-        pp: data.pp,
-        type: data.type.name,
-      };
-      resultMoves.push(newMove);
+    if (resultPokemon.data) {
+      setPokemonData(resultPokemon.data);
     }
-
-    const resultPokemon: IPokemon = {
-      name: name,
-      id: dataPokemon.pokemon.id,
-      moves: resultMoves,
-      image: dataPokemon.pokemon.sprites.front_default,
-      types: dataPokemon.pokemon.types.map((item: any) => item.type.name),
-    };
-
-    setPokemonData(resultPokemon);
   };
 
   const fetchPrevNextPokemon = async () => {
     setPrevPokemon(undefined!);
     setNextPokemon(undefined!);
 
-    const { data } = await client.query({
-      query: queryWildPokemonList,
-      variables: {
-        limit: 3,
-        offset: pokemonData.id - 2,
-      },
-    });
+    const resultPokemons = await apiGetPokemonList(pokemonData.id - 2, 3);
 
-    const resultPokemons: IPokemonItem[] = data.pokemons.results.map((pokemon: any) => {
-      const resultPokemon: IPokemonItem = {
-        image: pokemon.image,
-        name: pokemon.name,
-        id: pokemon.id,
-      };
-      return resultPokemon;
-    });
-
-    if (resultPokemons[0] !== undefined) {
-      setPrevPokemon(resultPokemons[0]);
-    }
-    if (resultPokemons[2] !== undefined) {
-      setNextPokemon(resultPokemons[2]);
+    if (resultPokemons.data) {
+      if (resultPokemons.data[0] !== undefined) {
+        setPrevPokemon(resultPokemons.data[0]);
+      }
+      if (resultPokemons.data[2] !== undefined) {
+        setNextPokemon(resultPokemons.data[2]);
+      }
     }
   };
 

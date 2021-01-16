@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 // const client = ...
-export const queryWildPokemonList = gql`
+export const queryGetPokemonList = gql`
   query pokemons($limit: Int, $offset: Int) {
     pokemons(limit: $limit, offset: $offset) {
       count
