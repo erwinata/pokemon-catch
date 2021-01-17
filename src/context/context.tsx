@@ -18,7 +18,7 @@ const initialState: IAppState = {
 
 const AppContext = createContext<{
   state: IAppState;
-  dispatch: React.Dispatch<AppActions>;
+  dispatch: React.Dispatch<AppActions> | any;
 }>({
   state: initialState,
   dispatch: () => null,

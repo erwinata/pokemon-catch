@@ -40,7 +40,7 @@ const PokemonImage: React.FC<Props> = (props) => {
   return (
     <Container withoutBackground={props.withoutBackground}>
       <ImageContainer>
-        <img src={props.src} alt={props.alt} />
+        <img src={props.src} alt={props.alt} data-testid="pokemon-image" />
       </ImageContainer>
     </Container>
   );

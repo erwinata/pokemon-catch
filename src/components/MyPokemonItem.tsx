@@ -100,6 +100,7 @@ const MyPokemonItem: React.FC<Props> = (props) => {
               e.stopPropagation();
               setDeleteConfirm(true);
             }}
+            data-testid="button-release"
           >
             <img src="/x-black.svg" alt="release" />
           </ReleaseButton>

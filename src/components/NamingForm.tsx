@@ -75,7 +75,13 @@ const NamingForm: React.FC<Props> = (props) => {
   return (
     <Form onSubmit={handle.submitForm}>
       <h1>Give Nickname</h1>
-      <Input error={inputError !== ""} autoFocus value={inputName} onChange={handle.inputChange} />
+      <Input
+        error={inputError !== ""}
+        autoFocus
+        value={inputName}
+        onChange={handle.inputChange}
+        role="input"
+      />
       {inputError && <TextError>{inputError}</TextError>}
       <Button size="lg" color="primary">
         OK

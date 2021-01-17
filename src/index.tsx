@@ -3,7 +3,7 @@ import { AppProvider } from "context/context";
 import React from "react";
 import ReactDOM from "react-dom";
 import client from "./api/client";
-import App from "./pages/App";
+import App from "./App";
 import "./styles/globals.css";
 import "./styles/reset.css";
 

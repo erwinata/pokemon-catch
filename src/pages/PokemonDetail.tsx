@@ -221,7 +221,10 @@ const PokemonDetail: React.FC<Props> = (props) => {
               />
               <Name>
                 {!pokemonBasicData ? (
-                  <Skeleton height={35} width={200} />
+                  <>
+                    <Skeleton height={35} width={200} />
+                    <div data-testid="loader"></div>
+                  </>
                 ) : (
                   <>{capitalizeEachWord(pokemonBasicData.name)}</>
                 )}

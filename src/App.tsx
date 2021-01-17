@@ -3,10 +3,10 @@ import Navbar from "components/Navbar";
 import { AppContext } from "context/context";
 import React, { useContext } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Main from "./Main";
-import MyPokemon from "./MyPokemon";
-import NotFound from "./NotFound";
-import PokemonDetail from "./PokemonDetail";
+import Main from "./pages/Main";
+import MyPokemon from "./pages/MyPokemon";
+import NotFound from "./pages/NotFound";
+import PokemonDetail from "./pages/PokemonDetail";
 
 const Container = styled.div`
   background: url("/bg.png") no-repeat center center fixed;

@@ -75,7 +75,7 @@ const PokemonItem: React.FC<Props> = (props) => {
       </ImageContainer>
       <Name>
         {props.data.name}
-        {props.totalOwned > 0 && <span>x{props.totalOwned}</span>}
+        {props.totalOwned > 0 && <span>{`x${props.totalOwned}`}</span>}
       </Name>
     </Container>
   );

@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import { IPokemon } from "types/IPokemon";
+import { getRandomBoolean, getRandomTimeout } from "utils/random";
 import { bounce, shake } from "../utils/animation";
 import { TCatchState } from "./CatchPopup";
 import CheckCircle from "./CheckCircle";
@@ -63,15 +64,7 @@ const Pokeball: React.FC<Props> = (props) => {
     await new Promise((res) => setTimeout(res, 800));
     setAnimationState("SHAKE");
     await new Promise((res) => setTimeout(res, getRandomTimeout()));
-    props.setCatchState(getRandomResult() ? "SUCCESS" : "FAILED");
-  };
-
-  const getRandomTimeout = () => {
-    return Math.random() * 1000 + 1000;
-  };
-
-  const getRandomResult = () => {
-    return Math.random() < 0.5;
+    props.setCatchState(getRandomBoolean() ? "SUCCESS" : "FAILED");
   };
 
   useEffect(() => {
