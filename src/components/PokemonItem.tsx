@@ -7,6 +7,7 @@ import PokemonImage from "./PokemonImage";
 
 interface Props {
   data: IPokemonItem;
+  totalOwned: number;
 }
 
 const Container = styled.div`
@@ -48,6 +49,14 @@ const Name = styled.div`
   ${mq.xs} {
     font-size: 0.8rem;
   }
+
+  & span {
+    margin-left: 4px;
+    background: #7894d1;
+    padding: 2px 0.5rem;
+    border-radius: 9999px;
+    color: white;
+  }
 `;
 
 const PokemonItem: React.FC<Props> = (props) => {
@@ -64,7 +73,10 @@ const PokemonItem: React.FC<Props> = (props) => {
       <ImageContainer>
         <PokemonImage src={props.data.image} alt={props.data.name} />
       </ImageContainer>
-      <Name>{props.data.name}</Name>
+      <Name>
+        {props.data.name}
+        {props.totalOwned > 0 && <span>x{props.totalOwned}</span>}
+      </Name>
     </Container>
   );
 };

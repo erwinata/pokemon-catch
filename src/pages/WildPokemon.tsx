@@ -83,7 +83,11 @@ const WildPokemon: React.FC<Props> = (props) => {
     <Container>
       <PokemonList>
         {wildPokemon.map((item, index) => {
-          return <PokemonItem data={item} key={index} />;
+          const totalOwned = state.myPokemon.filter((pokemon) => {
+            return item.id === pokemon.id;
+          }).length;
+
+          return <PokemonItem data={item} totalOwned={totalOwned} key={index} />;
         })}
       </PokemonList>
 
