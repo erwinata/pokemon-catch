@@ -32,24 +32,27 @@ const WildPokemon: React.FC<Props> = (props) => {
   const { state, dispatch } = useContext(AppContext);
   const { fetchWildPokemon } = useActions(state, dispatch);
 
+  const [isMounted, setIsMounted] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [flagFetchMore, setFlagFetchMore] = useState(state.wildPokemon.length === 0);
 
   const { wildPokemon } = state;
 
   useEffect(() => {
-    let isSubscribed = true;
+    setIsMounted(true);
 
     const startFetchingData = async (initialFetch?: boolean) => {
       setIsLoading(true);
-      setFlagFetchMore(false);
+
+      console.log("Start");
 
       const offset = initialFetch ? 0 : state.wildPokemon.length;
       const limit = initialFetch ? 30 : 30;
       await fetchWildPokemon(offset, limit);
 
-      if (!isSubscribed) return;
+      if (!isMounted) return;
 
+      setFlagFetchMore(false);
       setIsLoading(false);
     };
 
@@ -59,9 +62,9 @@ const WildPokemon: React.FC<Props> = (props) => {
     }
 
     return () => {
-      isSubscribed = false;
+      setIsMounted(false);
     };
-  }, [flagFetchMore, isLoading, fetchWildPokemon, state.wildPokemon.length]);
+  }, [flagFetchMore, isLoading, fetchWildPokemon, state.wildPokemon.length, isMounted]);
 
   useEffect(() => {
     const handleScroll = (e: any) => {
@@ -76,6 +79,7 @@ const WildPokemon: React.FC<Props> = (props) => {
 
       if (scrollTop >= scrollHeight - clientHeight * 2) {
         if (!flagFetchMore) {
+          console.log("flagmore");
           setFlagFetchMore(true);
         }
       }

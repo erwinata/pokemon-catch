@@ -119,6 +119,7 @@ const PokemonDetail: React.FC<Props> = (props) => {
   const [nextPokemon, setNextPokemon] = useState<IPokemonItem>(undefined!);
 
   const [isCatching, setIsCatching] = useState(false);
+  const [isMounted, setIsMounted] = useState(true);
 
   const { name } = useParams<IParams>();
   const history = useHistory();
@@ -127,7 +128,7 @@ const PokemonDetail: React.FC<Props> = (props) => {
   const { showMyPokemon } = useActions(state, dispatch);
 
   useEffect(() => {
-    let isSubscribed = true;
+    setIsMounted(true);
 
     const fetchPokemonDetail = async () => {
       setPrevPokemon(undefined!);
@@ -136,7 +137,7 @@ const PokemonDetail: React.FC<Props> = (props) => {
 
       const resultPokemon = await apiGetPokemonDetail(name);
 
-      if (!isSubscribed) return;
+      if (!isMounted) return;
 
       if (resultPokemon.data) {
         setPokemonBasicData({
@@ -151,17 +152,17 @@ const PokemonDetail: React.FC<Props> = (props) => {
     }
 
     return () => {
-      isSubscribed = false;
+      setIsMounted(false);
     };
-  }, [name]);
+  }, [name, isMounted]);
 
   useEffect(() => {
-    let isSubscribed = true;
+    setIsMounted(true);
 
     const fetchPrevNextPokemon = async () => {
       const resultPokemons = await apiGetPokemonList(pokemonDetailData.id - 2, 3);
 
-      if (!isSubscribed) return;
+      if (!isMounted) return;
 
       if (resultPokemons.data) {
         if (resultPokemons.data[0] !== undefined) {
@@ -178,9 +179,9 @@ const PokemonDetail: React.FC<Props> = (props) => {
     }
 
     return () => {
-      isSubscribed = false;
+      setIsMounted(false);
     };
-  }, [pokemonDetailData]);
+  }, [pokemonDetailData, isMounted]);
 
   const handle = {
     goBack: () => {
