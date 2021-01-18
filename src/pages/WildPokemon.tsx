@@ -28,6 +28,8 @@ const PokemonList = styled.div`
   row-gap: 1.5rem;
 `;
 
+const FETCH_POKEMON_COUNT = 40;
+
 const WildPokemon: React.FC<Props> = (props) => {
   const { state, dispatch } = useContext(AppContext);
   const { fetchWildPokemon } = useActions(state, dispatch);
@@ -45,7 +47,7 @@ const WildPokemon: React.FC<Props> = (props) => {
       setIsLoading(true);
 
       const offset = initialFetch ? 0 : state.wildPokemon.length;
-      const limit = initialFetch ? 30 : 30;
+      const limit = FETCH_POKEMON_COUNT;
       await fetchWildPokemon(offset, limit);
 
       if (!isMounted) return;
