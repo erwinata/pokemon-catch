@@ -44,8 +44,6 @@ const WildPokemon: React.FC<Props> = (props) => {
     const startFetchingData = async (initialFetch?: boolean) => {
       setIsLoading(true);
 
-      console.log("Start");
-
       const offset = initialFetch ? 0 : state.wildPokemon.length;
       const limit = initialFetch ? 30 : 30;
       await fetchWildPokemon(offset, limit);
@@ -79,7 +77,6 @@ const WildPokemon: React.FC<Props> = (props) => {
 
       if (scrollTop >= scrollHeight - clientHeight * 2) {
         if (!flagFetchMore) {
-          console.log("flagmore");
           setFlagFetchMore(true);
         }
       }
