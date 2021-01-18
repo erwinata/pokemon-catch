@@ -126,44 +126,60 @@ const PokemonDetail: React.FC<Props> = (props) => {
   const { state, dispatch } = useContext(AppContext);
   const { showMyPokemon } = useActions(state, dispatch);
 
-  const fetchPokemonDetail = async () => {
-    setPrevPokemon(undefined!);
-    setNextPokemon(undefined!);
-    setPokemonDetailData(undefined!);
-
-    const resultPokemon = await apiGetPokemonDetail(name);
-
-    if (resultPokemon.data) {
-      setPokemonBasicData({
-        ...resultPokemon.data,
-      });
-      setPokemonDetailData(resultPokemon.data);
-    }
-  };
-
-  const fetchPrevNextPokemon = async () => {
-    const resultPokemons = await apiGetPokemonList(pokemonDetailData.id - 2, 3);
-
-    if (resultPokemons.data) {
-      if (resultPokemons.data[0] !== undefined) {
-        setPrevPokemon(resultPokemons.data[0]);
-      }
-      if (resultPokemons.data[2] !== undefined) {
-        setNextPokemon(resultPokemons.data[2]);
-      }
-    }
-  };
-
   useEffect(() => {
+    let isSubscribed = true;
+
+    const fetchPokemonDetail = async () => {
+      setPrevPokemon(undefined!);
+      setNextPokemon(undefined!);
+      setPokemonDetailData(undefined!);
+
+      const resultPokemon = await apiGetPokemonDetail(name);
+
+      if (!isSubscribed) return;
+
+      if (resultPokemon.data) {
+        setPokemonBasicData({
+          ...resultPokemon.data,
+        });
+        setPokemonDetailData(resultPokemon.data);
+      }
+    };
+
     if (name) {
       fetchPokemonDetail();
     }
+
+    return () => {
+      isSubscribed = false;
+    };
   }, [name]);
 
   useEffect(() => {
+    let isSubscribed = true;
+
+    const fetchPrevNextPokemon = async () => {
+      const resultPokemons = await apiGetPokemonList(pokemonDetailData.id - 2, 3);
+
+      if (!isSubscribed) return;
+
+      if (resultPokemons.data) {
+        if (resultPokemons.data[0] !== undefined) {
+          setPrevPokemon(resultPokemons.data[0]);
+        }
+        if (resultPokemons.data[2] !== undefined) {
+          setNextPokemon(resultPokemons.data[2]);
+        }
+      }
+    };
+
     if (pokemonDetailData) {
       fetchPrevNextPokemon();
     }
+
+    return () => {
+      isSubscribed = false;
+    };
   }, [pokemonDetailData]);
 
   const handle = {

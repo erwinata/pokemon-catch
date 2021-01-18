@@ -59,15 +59,15 @@ export type TAnimationState = "BOUNCE" | "SHAKE";
 const Pokeball: React.FC<Props> = (props) => {
   const [animationState, setAnimationState] = useState<TAnimationState>("BOUNCE");
 
-  const animate = async () => {
-    setAnimationState("BOUNCE");
-    await new Promise((res) => setTimeout(res, 800));
-    setAnimationState("SHAKE");
-    await new Promise((res) => setTimeout(res, getRandomTimeout()));
-    props.setCatchState(getRandomBoolean() ? "SUCCESS" : "FAILED");
-  };
-
   useEffect(() => {
+    const animate = async () => {
+      setAnimationState("BOUNCE");
+      await new Promise((res) => setTimeout(res, 800));
+      setAnimationState("SHAKE");
+      await new Promise((res) => setTimeout(res, getRandomTimeout()));
+      props.setCatchState(getRandomBoolean() ? "SUCCESS" : "FAILED");
+    };
+
     if (props.catchState === "CATCHING") {
       animate();
     }

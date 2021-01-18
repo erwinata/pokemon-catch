@@ -16,7 +16,7 @@ const Container = styled.div`
 `;
 
 const App: React.FC<any> = (props) => {
-  const { state, dispatch } = useContext(AppContext);
+  const { state } = useContext(AppContext);
 
   return (
     <Container>

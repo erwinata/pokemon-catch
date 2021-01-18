@@ -29,50 +29,58 @@ const PokemonList = styled.div`
 `;
 
 const WildPokemon: React.FC<Props> = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [flagFetchMore, setFlagFetchMore] = useState(true);
-
-  const handleScroll = (e: any) => {
-    e.preventDefault();
-    checkIncreaseLimit();
-  };
-
-  const checkIncreaseLimit = () => {
-    // const { scrollTop, scrollHeight, clientHeight } = window.screen;
-    const scrollTop = window.scrollY || window.pageYOffset;
-    const scrollHeight = document.body.scrollHeight;
-    const clientHeight = window.innerHeight;
-
-    if (scrollTop >= scrollHeight - clientHeight * 2) {
-      if (!flagFetchMore) {
-        setFlagFetchMore(true);
-      }
-    }
-  };
-
   const { state, dispatch } = useContext(AppContext);
   const { fetchWildPokemon } = useActions(state, dispatch);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [flagFetchMore, setFlagFetchMore] = useState(state.wildPokemon.length === 0);
+
   const { wildPokemon } = state;
 
-  const startFetchingData = async (initialFetch?: boolean) => {
-    setIsLoading(true);
-
-    const offset = initialFetch ? 0 : state.wildPokemon.length;
-    const limit = initialFetch ? 30 : 30;
-    await fetchWildPokemon(offset, limit);
-
-    setIsLoading(false);
-    setFlagFetchMore(false);
-  };
-
   useEffect(() => {
-    if (flagFetchMore) {
+    let isSubscribed = true;
+
+    const startFetchingData = async (initialFetch?: boolean) => {
+      setIsLoading(true);
+      setFlagFetchMore(false);
+
+      const offset = initialFetch ? 0 : state.wildPokemon.length;
+      const limit = initialFetch ? 30 : 30;
+      await fetchWildPokemon(offset, limit);
+
+      if (!isSubscribed) return;
+
+      setIsLoading(false);
+    };
+
+    if (flagFetchMore && !isLoading) {
       const initialFetch = state.wildPokemon.length === 0;
       startFetchingData(initialFetch);
     }
-  }, [flagFetchMore]);
+
+    return () => {
+      isSubscribed = false;
+    };
+  }, [flagFetchMore, isLoading, fetchWildPokemon, state.wildPokemon.length]);
 
   useEffect(() => {
+    const handleScroll = (e: any) => {
+      e.preventDefault();
+      checkIncreaseLimit();
+    };
+
+    const checkIncreaseLimit = () => {
+      const scrollTop = window.scrollY || window.pageYOffset;
+      const scrollHeight = document.body.scrollHeight;
+      const clientHeight = window.innerHeight;
+
+      if (scrollTop >= scrollHeight - clientHeight * 2) {
+        if (!flagFetchMore) {
+          setFlagFetchMore(true);
+        }
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
