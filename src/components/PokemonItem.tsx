@@ -39,6 +39,22 @@ const Container = styled.div`
 
 const ImageContainer = styled.div`
   width: 80%;
+  position: relative;
+`;
+
+const TotalOwned = styled.div`
+  position: absolute;
+  z-index: 1;
+  right: -0.5rem;
+  background: #7894d1;
+  padding: 2px 0.5rem;
+  border-radius: 9999px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.8rem;
+  ${mq.xs} {
+    font-size: 1rem;
+  }
 `;
 
 const Name = styled.div`
@@ -48,14 +64,6 @@ const Name = styled.div`
   font-size: 0.7rem;
   ${mq.xs} {
     font-size: 0.8rem;
-  }
-
-  & span {
-    margin-left: 4px;
-    background: #7894d1;
-    padding: 2px 0.5rem;
-    border-radius: 9999px;
-    color: white;
   }
 `;
 
@@ -71,12 +79,10 @@ const PokemonItem: React.FC<Props> = (props) => {
   return (
     <Container onClick={handle.openPokemon}>
       <ImageContainer>
+        {props.totalOwned > 0 && <TotalOwned>{`x${props.totalOwned}`}</TotalOwned>}
         <PokemonImage src={props.data.image} alt={props.data.name} />
       </ImageContainer>
-      <Name>
-        {props.data.name}
-        {props.totalOwned > 0 && <span>{`x${props.totalOwned}`}</span>}
-      </Name>
+      <Name>{props.data.name}</Name>
     </Container>
   );
 };
